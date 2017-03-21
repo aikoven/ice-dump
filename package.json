@@ -6,6 +6,7 @@
     "Ice"
   ],
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "test": "tape test/index.js"
   },
