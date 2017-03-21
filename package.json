@@ -1,0 +1,21 @@
+{
+  "name": "ice-dump",
+  "version": "1.0.0",
+  "description": "Encode and decode ZeroC Ice objects manually into Ice binary format",
+  "keywords": [
+    "Ice"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/index.js"
+  },
+  "repository": "aikoven/ice-dump",
+  "author": "Daniel Lytkin <dan.lytkin@gmail.com>",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "ice": "^3.6.3"
+  },
+  "devDependencies": {
+    "tape": "^4.6.3"
+  }
+}
