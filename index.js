@@ -3,7 +3,16 @@ var Ice = require('ice').Ice;
 module.exports.objectToBuffer = objectToBuffer;
 module.exports.bufferToObject = bufferToObject;
 
+var defaultCommunicator;
+
+function getDefaultCommunicator() {
+  return defaultCommunicator || (defaultCommunicator = Ice.initialize());
+}
+
 function objectToBuffer(object, communicator) {
+  if (communicator == null)
+    communicator = getDefaultCommunicator();
+
   var stream = new Ice.BasicStream(
     communicator._instance,
     Ice.Protocol.currentProtocolEncoding
@@ -16,6 +25,9 @@ function objectToBuffer(object, communicator) {
 }
 
 function bufferToObject(buffer, communicator) {
+  if (communicator == null)
+    communicator = getDefaultCommunicator();
+
   var stream = new Ice.BasicStream(
     communicator._instance,
     Ice.Protocol.currentProtocolEncoding,
