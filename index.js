@@ -1,20 +1,29 @@
-var Ice = require('ice').Ice;
+var Ice = require('ice/src/Ice/BasicStream').Ice;
 
 module.exports.objectToBuffer = objectToBuffer;
 module.exports.bufferToObject = bufferToObject;
 
-var defaultCommunicator;
+var defaultsAndOverrides = {
+  defaultFormat: Ice.FormatType.CompactFormat
+};
 
-function getDefaultCommunicator() {
-  return defaultCommunicator || (defaultCommunicator = Ice.initialize());
-}
+var objectFactoryManager = {
+  find: function() {}
+};
 
-function objectToBuffer(object, communicator) {
-  if (communicator == null)
-    communicator = getDefaultCommunicator();
+var dummyInstance = {
+  defaultsAndOverrides: function () {
+    return defaultsAndOverrides;
+  },
 
+  servantFactoryManager: function() {
+    return objectFactoryManager;
+  }
+};
+
+function objectToBuffer(object) {
   var stream = new Ice.BasicStream(
-    communicator._instance,
+    dummyInstance,
     Ice.Protocol.currentProtocolEncoding
   );
 
@@ -24,12 +33,9 @@ function objectToBuffer(object, communicator) {
   return stream._buf.b;
 }
 
-function bufferToObject(buffer, communicator) {
-  if (communicator == null)
-    communicator = getDefaultCommunicator();
-
+function bufferToObject(buffer) {
   var stream = new Ice.BasicStream(
-    communicator._instance,
+    dummyInstance,
     Ice.Protocol.currentProtocolEncoding,
     buffer
   );
