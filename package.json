@@ -8,7 +8,8 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "test": "tape test/index.js"
+    "test": "tape test/index.js",
+    "compile-slice": "slice2js --output-dir test test/Test.ice"
   },
   "repository": "aikoven/ice-dump",
   "author": "Daniel Lytkin <dan.lytkin@gmail.com>",

@@ -44,10 +44,11 @@
         true);
 
     Test.Base = Slice.defineObject(
-        function(intVal)
+        function(intVal, optionalStruct)
         {
             Ice.Object.call(this);
             this.intVal = intVal !== undefined ? intVal : 0;
+            this.optionalStruct = optionalStruct;
         },
         Ice.Object, undefined, 1,
         [
@@ -58,10 +59,12 @@
         function(__os)
         {
             __os.writeInt(this.intVal);
+            Test.SomeStruct.writeOpt(__os, 1, this.optionalStruct);
         },
         function(__is)
         {
             this.intVal = __is.readInt();
+            this.optionalStruct = Test.SomeStruct.readOpt(__is, 1);
         },
         false);
 
@@ -70,13 +73,14 @@
     Slice.defineOperations(Test.Base, Test.BasePrx);
 
     Test.TestObj = Slice.defineObject(
-        function(intVal, stringVal, stringSeqVal, nestedObject, nestedStruct)
+        function(intVal, optionalStruct, stringVal, stringSeqVal, nestedObject, nestedStruct, optionalIntSeqVal)
         {
-            Test.Base.call(this, intVal);
+            Test.Base.call(this, intVal, optionalStruct);
             this.stringVal = stringVal !== undefined ? stringVal : "";
             this.stringSeqVal = stringSeqVal !== undefined ? stringSeqVal : null;
             this.nestedObject = nestedObject !== undefined ? nestedObject : null;
             this.nestedStruct = nestedStruct !== undefined ? nestedStruct : new Test.SomeStruct();
+            this.optionalIntSeqVal = optionalIntSeqVal;
         },
         Test.Base, undefined, 2,
         [
@@ -91,6 +95,7 @@
             Ice.StringSeqHelper.write(__os, this.stringSeqVal);
             __os.writeObject(this.nestedObject);
             Test.SomeStruct.write(__os, this.nestedStruct);
+            Ice.IntSeqHelper.writeOpt(__os, 1, this.optionalIntSeqVal);
         },
         function(__is)
         {
@@ -99,6 +104,7 @@
             this.stringSeqVal = Ice.StringSeqHelper.read(__is);
             __is.readObject(function(__o){ self.nestedObject = __o; }, Test.Base);
             this.nestedStruct = Test.SomeStruct.read(__is, this.nestedStruct);
+            this.optionalIntSeqVal = Ice.IntSeqHelper.readOpt(__is, 1);
         },
         false);
 

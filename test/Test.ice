@@ -9,6 +9,7 @@ module Test {
 
     class Base {
         int intVal;
+        optional(1) SomeStruct optionalStruct;
     };
 
     class TestObj extends Base {
@@ -16,5 +17,6 @@ module Test {
         Ice::StringSeq stringSeqVal;
         Base nestedObject;
         SomeStruct nestedStruct;
+        optional(1) Ice::IntSeq optionalIntSeqVal;
     };
 };

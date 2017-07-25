@@ -24,7 +24,7 @@ var dummyInstance = {
 function objectToBuffer(object) {
   var stream = new Ice.BasicStream(
     dummyInstance,
-    Ice.Protocol.currentProtocolEncoding
+    Ice.Encoding_1_1
   );
 
   stream.writeObject(object);
@@ -36,7 +36,7 @@ function objectToBuffer(object) {
 function bufferToObject(buffer) {
   var stream = new Ice.BasicStream(
     dummyInstance,
-    Ice.Protocol.currentProtocolEncoding,
+    Ice.Encoding_1_1,
     buffer
   );
 
