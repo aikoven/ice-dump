@@ -1,4 +1,5 @@
 var Ice = require('ice/src/Ice/BasicStream').Ice;
+var trimEnd = require('buffertrim').trimEnd;
 
 module.exports.objectToBuffer = objectToBuffer;
 module.exports.bufferToObject = bufferToObject;
@@ -30,7 +31,7 @@ function objectToBuffer(object) {
   stream.writeObject(object);
   stream.writePendingObjects();
 
-  return stream._buf.b;
+  return trimEnd(stream._buf.b);
 }
 
 function bufferToObject(buffer) {

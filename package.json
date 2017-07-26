@@ -15,6 +15,7 @@
   "author": "Daniel Lytkin <dan.lytkin@gmail.com>",
   "license": "GPL-2.0",
   "dependencies": {
+    "buffertrim": "^1.0.0",
     "ice": "~3.6.3"
   },
   "devDependencies": {
