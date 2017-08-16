@@ -13,10 +13,6 @@ brace-expansion@^1.0.0:
     balanced-match "^0.4.1"
     concat-map "0.0.1"
 
-buffertrim@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/buffertrim/-/buffertrim-1.0.0.tgz#db50a1018958c1ff15063047f8c9ee0759519c1f"
-
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
