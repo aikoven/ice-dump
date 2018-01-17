@@ -1,6 +1,6 @@
 # Ice Dump [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
-Encode and decode ZeroC Ice objects manually into Ice binary format.
+Encode and decode ZeroC Ice values manually into Ice binary format.
 
 ## Installation
 
@@ -11,11 +11,11 @@ npm install ice-dump
 ## Usage
 
 ```js
-import {objectToBuffer, bufferToObject} from 'ice-dump';
+import {valueToBuffer, bufferToValue} from 'ice-dump';
 
-const buffer = objectToBuffer(iceObject, communicator);  // NodeJS buffer
+const buffer = valueToBuffer(iceValue);  // NodeJS buffer
 
-const readIceObject = bufferToObject(buffer, communicator);
+const iceValue = bufferToValue(buffer);
 ```
 
 [npm-image]: https://badge.fury.io/js/ice-dump.svg

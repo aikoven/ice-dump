@@ -1,5 +1,5 @@
 import {Ice} from "ice";
 
-export function objectToBuffer(object: Ice.Object): Buffer;
+export function valueToBuffer(object: Ice.Value): Buffer;
 
-export function bufferToObject(buffer: Buffer): Ice.Object;
+export function bufferToValue<V extends Ice.Value>(buffer: Buffer): V;

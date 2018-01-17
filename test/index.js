@@ -1,6 +1,6 @@
 const test = require('tape');
 
-const {objectToBuffer, bufferToObject} = require('../index');
+const {valueToBuffer, bufferToValue} = require('../index');
 const {Test} = require('./Test');
 
 test('dump', assert => {
@@ -14,14 +14,9 @@ test('dump', assert => {
     [1, 2, 3]
   );
 
-  const buffer = objectToBuffer(obj);
+  const buffer = valueToBuffer(obj);
 
-  const readObject = bufferToObject(buffer);
-
-  obj.__address = 0;
-  obj.nestedObject.__address = 0;
-  readObject.__address = 0;
-  readObject.nestedObject.__address = 0;
+  const readObject = bufferToValue(buffer);
 
   assert.deepEquals(obj, readObject);
   assert.end();

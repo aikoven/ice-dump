@@ -1,53 +1,46 @@
-var Ice = require('ice/src/Ice/BasicStream').Ice;
+var Ice = require('ice/src/Ice/Stream').Ice;
 
-module.exports.objectToBuffer = objectToBuffer;
-module.exports.bufferToObject = bufferToObject;
+module.exports.valueToBuffer = valueToBuffer;
+module.exports.bufferToValue = bufferToValue;
 
 var defaultsAndOverrides = {
-  defaultFormat: Ice.FormatType.CompactFormat
+  defaultFormat: Ice.FormatType.CompactFormat,
 };
 
-var objectFactoryManager = {
-  find: function() {}
+var fakeValueFactoryManager = {
+  find: function() {},
 };
 
-var dummyInstance = {
-  defaultsAndOverrides: function () {
+var fakeInstance = {
+  defaultsAndOverrides: function() {
     return defaultsAndOverrides;
   },
-
-  servantFactoryManager: function() {
-    return objectFactoryManager;
-  }
 };
 
-function objectToBuffer(object) {
-  var stream = new Ice.BasicStream(
-    dummyInstance,
-    Ice.Encoding_1_1
-  );
+function valueToBuffer(object) {
+  var stream = new Ice.OutputStream(Ice.Encoding_1_1);
+  stream._instance = fakeInstance;
+  stream._valueFactoryManager = fakeValueFactoryManager;
 
-  stream.writeObject(object);
-  stream.writePendingObjects();
+  stream.writeValue(object);
+  stream.writePendingValues();
 
   return stream._buf.b.slice(0, stream._buf.limit);
 }
 
-function bufferToObject(buffer) {
-  var stream = new Ice.BasicStream(
-    dummyInstance,
-    Ice.Encoding_1_1,
-    buffer
-  );
+function bufferToValue(buffer) {
+  var stream = new Ice.InputStream(Ice.Encoding_1_1, new Ice.Buffer(buffer));
+  stream._instance = fakeInstance;
+  stream._valueFactoryManager = fakeValueFactoryManager;
 
   stream._buf.resize(buffer.length);
 
   var object;
 
-  stream.readObject(function (obj) {
+  stream.readValue(function(obj) {
     object = obj;
-  }, Ice.Object);
-  stream.readPendingObjects();
+  }, Ice.Value);
+  stream.readPendingValues();
 
   return object;
 }

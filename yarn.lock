@@ -84,9 +84,9 @@ has@^1.0.1, has@~1.0.1:
   dependencies:
     function-bind "^1.0.2"
 
-ice@~3.6.3:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/ice/-/ice-3.6.3.tgz#561eecccceb6aac30d5f1312e49e6c71c657acbb"
+ice@~3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/ice/-/ice-3.7.0.tgz#3f4c3c6cc35a7db8ce9071eabef06acf0367576c"
 
 inflight@^1.0.4:
   version "1.0.6"
