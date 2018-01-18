@@ -25,11 +25,19 @@ function valueToBuffer(object) {
   stream.writeValue(object);
   stream.writePendingValues();
 
-  return stream._buf.b.slice(0, stream._buf.limit);
+  return Buffer.from(stream._buf.b.slice(0, stream._buf.limit));
 }
 
 function bufferToValue(buffer) {
-  var stream = new Ice.InputStream(Ice.Encoding_1_1, new Ice.Buffer(buffer));
+  var stream = new Ice.InputStream(
+    Ice.Encoding_1_1,
+    new Ice.Buffer(
+      buffer.buffer.slice(
+        buffer.byteOffset,
+        buffer.byteOffset + buffer.byteLength,
+      ),
+    ),
+  );
   stream._instance = fakeInstance;
   stream._valueFactoryManager = fakeValueFactoryManager;
 
