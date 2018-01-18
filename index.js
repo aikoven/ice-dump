@@ -34,9 +34,9 @@ function bufferToValue(buffer) {
     new Ice.Buffer(
       buffer.buffer.slice(
         buffer.byteOffset,
-        buffer.byteOffset + buffer.byteLength,
-      ),
-    ),
+        buffer.byteOffset + buffer.byteLength
+      )
+    )
   );
   stream._instance = fakeInstance;
   stream._valueFactoryManager = fakeValueFactoryManager;
