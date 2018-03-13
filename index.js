@@ -25,23 +25,17 @@ function valueToBuffer(object) {
   stream.writeValue(object);
   stream.writePendingValues();
 
-  return Buffer.from(stream._buf.b.slice(0, stream._buf.limit));
+  return new Uint8Array(stream._buf.b, 0, stream._buf.limit);
 }
 
-function bufferToValue(buffer) {
-  var stream = new Ice.InputStream(
-    Ice.Encoding_1_1,
-    new Ice.Buffer(
-      buffer.buffer.slice(
-        buffer.byteOffset,
-        buffer.byteOffset + buffer.byteLength
-      )
-    )
-  );
+function bufferToValue(uint8array) {
+  var iceBuffer = new Ice.Buffer(uint8array.buffer);
+  iceBuffer.limit = uint8array.byteLength + uint8array.byteOffset;
+  iceBuffer.position = uint8array.byteOffset;
+
+  var stream = new Ice.InputStream(Ice.Encoding_1_1, iceBuffer);
   stream._instance = fakeInstance;
   stream._valueFactoryManager = fakeValueFactoryManager;
-
-  stream._buf.resize(buffer.length);
 
   var object;
 

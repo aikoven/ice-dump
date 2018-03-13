@@ -17,7 +17,15 @@ test('dump', assert => {
   const buffer = valueToBuffer(obj);
 
   const readObject = bufferToValue(buffer);
-
   assert.deepEquals(obj, readObject);
+
+  const shiftedBuffer = new Uint8Array(buffer.length + 8).fill(1);
+  shiftedBuffer.set(buffer, 4);
+
+  const shiftedReadObject = bufferToValue(
+    shiftedBuffer.subarray(4, buffer.length + 4)
+  );
+  assert.deepEquals(obj, shiftedReadObject);
+
   assert.end();
 });
