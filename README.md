@@ -13,7 +13,7 @@ npm install ice-dump
 ```js
 import {valueToBuffer, bufferToValue} from 'ice-dump';
 
-const buffer = valueToBuffer(iceValue);  // NodeJS buffer
+const buffer = valueToBuffer(iceValue);  // Uint8Array
 
 const iceValue = bufferToValue(buffer);
 ```
