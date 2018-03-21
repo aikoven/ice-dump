@@ -9,7 +9,8 @@
   "typings": "index.d.ts",
   "scripts": {
     "test": "tape test/index.js",
-    "compile-slice": "slice2js --output-dir test test/Test.ice"
+    "compile-slice": "slice2js --output-dir test test/Test.ice",
+    "prepublishOnly": "npm test"
   },
   "repository": "aikoven/ice-dump",
   "author": "Daniel Lytkin <dan.lytkin@gmail.com>",
