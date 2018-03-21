@@ -10,12 +10,25 @@ npm install ice-dump
 
 ## Usage
 
+Serializing instances of Ice.Value:
+
 ```js
 import {valueToBuffer, bufferToValue} from 'ice-dump';
 
 const buffer = valueToBuffer(iceValue);  // Uint8Array
 
-const iceValue = bufferToValue(buffer);
+const readValue = bufferToValue(buffer);
+```
+
+To serialize structs, sequences or dictionaries you must provide Ice type name
+in form `MyModule.MySeq` or `::MyModule::MySeq`:
+
+```js
+import {iceToBuffer, bufferToIce} from 'ice-dump';
+
+const buffer = iceToBuffer(sequence, 'MyModule.MySeq');  // Uint8Array
+
+const readSequence = bufferToIce(buffer, 'MyModule.MySeq');
 ```
 
 [npm-image]: https://badge.fury.io/js/ice-dump.svg

@@ -19,4 +19,10 @@ module Test {
         SomeStruct nestedStruct;
         optional(1) Ice::IntSeq optionalIntSeqVal;
     };
+
+    sequence<SomeStruct> SomeStructSeq;
+    sequence<Base> BaseSeq;
+
+    dictionary<string, SomeStruct> SimpleDict;
+    dictionary<SomeStruct, Base> ComplexDict;
 };

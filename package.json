@@ -18,6 +18,7 @@
     "ice": "~3.7.0"
   },
   "devDependencies": {
+    "lodash": "^4.17.5",
     "tape": "^4.6.3"
   }
 }

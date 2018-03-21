@@ -130,6 +130,14 @@
     };
 
     Slice.defineOperations(Test.TestObjDisp, undefined, iceC_Test_TestObj_ids, 2);
+
+    Slice.defineSequence(Test, "SomeStructSeqHelper", "Test.SomeStruct", true);
+
+    Slice.defineSequence(Test, "BaseSeqHelper", "Ice.ObjectHelper", false, "Test.Base");
+
+    Slice.defineDictionary(Test, "SimpleDict", "SimpleDictHelper", "Ice.StringHelper", "Test.SomeStruct", false, undefined, undefined);
+
+    Slice.defineDictionary(Test, "ComplexDict", "ComplexDictHelper", "Test.SomeStruct", "Ice.ObjectHelper", false, Ice.HashMap.compareEquals, "Test.Base");
     exports.Test = Test;
 }
 (typeof(global) !== "undefined" && typeof(global.process) !== "undefined" ? module : undefined,
