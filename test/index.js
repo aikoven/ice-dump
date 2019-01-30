@@ -18,7 +18,7 @@ test('any value', assert => {
     ['bar', 'baz'],
     new Test.Base(24),
     new Test.SomeStruct(true),
-    [1, 2, 3],
+    [1, 2, 3]
   );
 
   const buffer = valueToBuffer(obj);
@@ -30,7 +30,7 @@ test('any value', assert => {
   shiftedBuffer.set(buffer, 4);
 
   const shiftedReadObject = bufferToValue(
-    shiftedBuffer.subarray(4, buffer.length + 4),
+    shiftedBuffer.subarray(4, buffer.length + 4)
   );
   assert.deepEquals(obj, shiftedReadObject);
 
@@ -45,7 +45,7 @@ test('value', assert => {
     ['bar', 'baz'],
     new Test.Base(24),
     new Test.SomeStruct(true),
-    [1, 2, 3],
+    [1, 2, 3]
   );
 
   const buffer = iceToBuffer(obj, 'Test.TestObj');
@@ -121,7 +121,7 @@ test('complex dictionary', assert => {
 test('proxies', assert => {
   const communicator = Ice.initialize();
   const routerPrx = communicator.stringToProxy(
-    'Test/Router:tcp -h 1.2.3.4 -p 5678',
+    'Test/Router:tcp -h 1.2.3.4 -p 5678'
   );
   const instance = new Test.ClassWithProxy(routerPrx);
 
