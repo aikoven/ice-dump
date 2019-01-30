@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Ice/BuiltinSequences.ice>
+#include <Ice/Router.ice>
 
 module Test {
     struct SomeStruct {
@@ -25,4 +26,8 @@ module Test {
 
     dictionary<string, SomeStruct> SimpleDict;
     dictionary<SomeStruct, Base> ComplexDict;
+
+    class ClassWithProxy {
+        Ice::Router* router;
+    };
 };

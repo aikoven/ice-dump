@@ -3,8 +3,10 @@ const {Ice} = require('ice');
 const _ = require('lodash');
 
 const {
-  valueToBuffer, bufferToValue,
-  iceToBuffer, bufferToIce
+  valueToBuffer,
+  bufferToValue,
+  iceToBuffer,
+  bufferToIce,
 } = require('../index');
 const {Test} = require('./Test');
 
@@ -16,7 +18,7 @@ test('any value', assert => {
     ['bar', 'baz'],
     new Test.Base(24),
     new Test.SomeStruct(true),
-    [1, 2, 3]
+    [1, 2, 3],
   );
 
   const buffer = valueToBuffer(obj);
@@ -28,7 +30,7 @@ test('any value', assert => {
   shiftedBuffer.set(buffer, 4);
 
   const shiftedReadObject = bufferToValue(
-    shiftedBuffer.subarray(4, buffer.length + 4)
+    shiftedBuffer.subarray(4, buffer.length + 4),
   );
   assert.deepEquals(obj, shiftedReadObject);
 
@@ -43,7 +45,7 @@ test('value', assert => {
     ['bar', 'baz'],
     new Test.Base(24),
     new Test.SomeStruct(true),
-    [1, 2, 3]
+    [1, 2, 3],
   );
 
   const buffer = iceToBuffer(obj, 'Test.TestObj');
@@ -80,10 +82,7 @@ test('value sequence', assert => {
 });
 
 test('struct sequence', assert => {
-  const seq = [
-    new Test.SomeStruct(true),
-    new Test.SomeStruct(false),
-  ];
+  const seq = [new Test.SomeStruct(true), new Test.SomeStruct(false)];
 
   const buffer = iceToBuffer(seq, 'Test.SomeStructSeq');
 
@@ -115,6 +114,21 @@ test('complex dictionary', assert => {
 
   const readDict = bufferToIce(buffer, 'Test.ComplexDict');
   assert.true(dict.equals(readDict, _.isEqual));
+
+  assert.end();
+});
+
+test('proxies', assert => {
+  const communicator = Ice.initialize();
+  const routerPrx = communicator.stringToProxy(
+    'Test/Router:tcp -h 1.2.3.4 -p 5678',
+  );
+  const instance = new Test.ClassWithProxy(routerPrx);
+
+  const buffer = valueToBuffer(instance);
+  const readInstance = bufferToValue(buffer, communicator);
+
+  assert.true(readInstance.router.equals(instance.router));
 
   assert.end();
 });

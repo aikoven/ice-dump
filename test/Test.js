@@ -138,6 +138,38 @@
     Slice.defineDictionary(Test, "SimpleDict", "SimpleDictHelper", "Ice.StringHelper", "Test.SomeStruct", false, undefined, undefined);
 
     Slice.defineDictionary(Test, "ComplexDict", "ComplexDictHelper", "Test.SomeStruct", "Ice.ObjectHelper", false, Ice.HashMap.compareEquals, "Test.Base");
+
+    const iceC_Test_ClassWithProxy_ids = [
+        "::Ice::Object",
+        "::Test::ClassWithProxy"
+    ];
+
+    Test.ClassWithProxy = class extends Ice.Value
+    {
+        constructor(router = null)
+        {
+            super();
+            this.router = router;
+        }
+
+        _iceWriteMemberImpl(ostr)
+        {
+            Ice.RouterPrx.write(ostr, this.router);
+        }
+
+        _iceReadMemberImpl(istr)
+        {
+            this.router = Ice.RouterPrx.read(istr, this.router);
+        }
+    };
+
+    Slice.defineValue(Test.ClassWithProxy, iceC_Test_ClassWithProxy_ids[1], false);
+
+    Test.ClassWithProxyDisp = class extends Ice.Object
+    {
+    };
+
+    Slice.defineOperations(Test.ClassWithProxyDisp, undefined, iceC_Test_ClassWithProxy_ids, 1);
     exports.Test = Test;
 }
 (typeof(global) !== "undefined" && typeof(global.process) !== "undefined" ? module : undefined,

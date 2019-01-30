@@ -31,14 +31,16 @@ function outputStreamToBuffer(stream) {
   return new Uint8Array(stream._buf.b, 0, stream._buf.limit);
 }
 
-function createInputStream(uint8array) {
+function createInputStream(uint8array, communicator) {
   const iceBuffer = new Ice.Buffer(uint8array.buffer);
   iceBuffer.limit = uint8array.byteLength + uint8array.byteOffset;
   iceBuffer.position = uint8array.byteOffset;
 
   const stream = new Ice.InputStream(Ice.Encoding_1_1, iceBuffer);
-  stream._instance = fakeInstance;
-  stream._valueFactoryManager = fakeValueFactoryManager;
+  stream._instance = communicator ? communicator._instance : fakeInstance;
+  stream._valueFactoryManager = communicator
+    ? communicator._instance._initData.valueFactoryManager
+    : fakeValueFactoryManager;
 
   return stream;
 }
@@ -60,8 +62,8 @@ function valueToBuffer(value) {
   return outputStreamToBuffer(stream);
 }
 
-function bufferToValue(uint8array) {
-  const stream = createInputStream(uint8array);
+function bufferToValue(uint8array, communicator) {
+  const stream = createInputStream(uint8array, communicator);
 
   let value;
 
@@ -103,8 +105,8 @@ function iceToBuffer(iceValue, type) {
   return outputStreamToBuffer(stream);
 }
 
-function bufferToIce(uint8array, type) {
-  const stream = createInputStream(uint8array);
+function bufferToIce(uint8array, type, communicator) {
+  const stream = createInputStream(uint8array, communicator);
 
   type = normalizeType(type);
 
