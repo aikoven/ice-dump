@@ -1,6 +1,6 @@
 {
   "name": "ice-dump",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Encode and decode ZeroC Ice objects manually into Ice binary format",
   "keywords": [
     "Ice"
