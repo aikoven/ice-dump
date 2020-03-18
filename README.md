@@ -20,6 +20,14 @@ const buffer = valueToBuffer(iceValue); // Uint8Array
 const readValue = bufferToValue(buffer);
 ```
 
+Using Sliced format:
+
+```js
+import {Ice} from 'ice';
+
+const buffer = valueToBuffer(iceValue, Ice.FormatType.SlicedFormat);
+```
+
 If you need to deal with proxies, pass `Communicator` as a second parameter to
 `bufferToValue`.
 

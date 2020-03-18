@@ -6,23 +6,25 @@ module.exports.bufferToValue = bufferToValue;
 module.exports.iceToBuffer = iceToBuffer;
 module.exports.bufferToIce = bufferToIce;
 
-const defaultsAndOverrides = {
-  defaultFormat: Ice.FormatType.CompactFormat,
-};
-
 const fakeValueFactoryManager = {
   find: function() {},
 };
 
-const fakeInstance = {
-  defaultsAndOverrides: function() {
-    return defaultsAndOverrides;
-  },
-};
+function createFakeInstance(format) {
+  const defaultsAndOverrides = {
+    defaultFormat: format || Ice.FormatType.CompactFormat,
+  };
 
-function createOutputStream() {
+  return {
+    defaultsAndOverrides: function() {
+      return defaultsAndOverrides;
+    },
+  };
+}
+
+function createOutputStream(format) {
   const stream = new Ice.OutputStream(Ice.Encoding_1_1);
-  stream._instance = fakeInstance;
+  stream._instance = createFakeInstance(format);
   stream._valueFactoryManager = fakeValueFactoryManager;
   return stream;
 }
@@ -37,7 +39,7 @@ function createInputStream(uint8array, communicator) {
   iceBuffer.position = uint8array.byteOffset;
 
   const stream = new Ice.InputStream(Ice.Encoding_1_1, iceBuffer);
-  stream._instance = communicator ? communicator._instance : fakeInstance;
+  stream._instance = communicator ? communicator._instance : createFakeInstance();
   stream._valueFactoryManager = communicator
     ? communicator._instance._initData.valueFactoryManager
     : fakeValueFactoryManager;
@@ -53,8 +55,8 @@ function normalizeType(type) {
   return type.replace(/^::/, '').replace(/::/g, '.');
 }
 
-function valueToBuffer(value) {
-  const stream = createOutputStream();
+function valueToBuffer(value, format) {
+  const stream = createOutputStream(format);
 
   stream.writeValue(value);
   stream.writePendingValues();
@@ -75,8 +77,8 @@ function bufferToValue(uint8array, communicator) {
   return value;
 }
 
-function iceToBuffer(iceValue, type) {
-  const stream = createOutputStream();
+function iceToBuffer(iceValue, type, format) {
+  const stream = createOutputStream(format);
 
   type = normalizeType(type);
 

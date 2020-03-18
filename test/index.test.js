@@ -34,6 +34,31 @@ test('any value', () => {
   expect(obj).toEqual(shiftedReadObject);
 });
 
+test('sliced format', () => {
+  const obj = new Test.TestObj(
+    42,
+    new Test.SomeStruct(true),
+    'foo',
+    ['bar', 'baz'],
+    new Test.Base(24),
+    new Test.SomeStruct(true),
+    [1, 2, 3]
+  );
+
+  const buffer = valueToBuffer(obj);
+  const bufferSliced = valueToBuffer(obj, Ice.FormatType.SlicedFormat);
+
+  delete Test.TestObj;
+
+  expect(() => bufferToValue(buffer)).toThrow();
+
+  expect(bufferToValue(bufferSliced)).toEqual(
+    new Test.Base(42, new Test.SomeStruct(true))
+  );
+
+  Test.TestObj = obj.constructor;
+});
+
 test('value', () => {
   const obj = new Test.TestObj(
     42,

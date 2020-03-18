@@ -1,6 +1,6 @@
 import {Ice} from 'ice';
 
-export function valueToBuffer(value: Ice.Value): Uint8Array;
+export function valueToBuffer(value: Ice.Value, format?: Ice.FormatType): Uint8Array;
 
 export function bufferToValue<V extends Ice.Value>(
   buffer: Uint8Array,
@@ -21,7 +21,7 @@ export interface IceSequence
 
 export type IceValue = Ice.Value | Ice.Struct | IceDictionary | IceSequence;
 
-export function iceToBuffer(value: IceValue, type: string): Uint8Array;
+export function iceToBuffer(value: IceValue, type: string, format?: Ice.FormatType): Uint8Array;
 export function bufferToIce<V extends IceValue>(
   buffer: Uint8Array,
   type: string,
