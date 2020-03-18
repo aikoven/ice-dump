@@ -1,4 +1,3 @@
-const test = require('tape');
 const {Ice} = require('ice');
 const _ = require('lodash');
 
@@ -6,11 +5,11 @@ const {
   valueToBuffer,
   bufferToValue,
   iceToBuffer,
-  bufferToIce,
+  bufferToIce
 } = require('../index');
 const {Test} = require('./Test');
 
-test('any value', assert => {
+test('any value', () => {
   const obj = new Test.TestObj(
     42,
     new Test.SomeStruct(true),
@@ -24,7 +23,7 @@ test('any value', assert => {
   const buffer = valueToBuffer(obj);
 
   const readObject = bufferToValue(buffer);
-  assert.deepEquals(obj, readObject);
+  expect(obj).toEqual(readObject);
 
   const shiftedBuffer = new Uint8Array(buffer.length + 8).fill(1);
   shiftedBuffer.set(buffer, 4);
@@ -32,12 +31,10 @@ test('any value', assert => {
   const shiftedReadObject = bufferToValue(
     shiftedBuffer.subarray(4, buffer.length + 4)
   );
-  assert.deepEquals(obj, shiftedReadObject);
-
-  assert.end();
+  expect(obj).toEqual(shiftedReadObject);
 });
 
-test('value', assert => {
+test('value', () => {
   const obj = new Test.TestObj(
     42,
     new Test.SomeStruct(true),
@@ -51,23 +48,19 @@ test('value', assert => {
   const buffer = iceToBuffer(obj, 'Test.TestObj');
 
   const readObject = bufferToIce(buffer, 'Test.TestObj');
-  assert.deepEquals(obj, readObject);
-
-  assert.end();
+  expect(obj).toEqual(readObject);
 });
 
-test('struct', assert => {
+test('struct', () => {
   const struct = new Test.SomeStruct(true);
 
   const buffer = iceToBuffer(struct, 'Test.SomeStruct');
 
   const readStruct = bufferToIce(buffer, 'Test.SomeStruct');
-  assert.deepEquals(struct, readStruct);
-
-  assert.end();
+  expect(struct).toEqual(readStruct);
 });
 
-test('value sequence', assert => {
+test('value sequence', () => {
   const obj1 = new Test.Base(42);
   const obj2 = new Test.Base(24, new Test.SomeStruct(true));
 
@@ -76,23 +69,19 @@ test('value sequence', assert => {
   const buffer = iceToBuffer(seq, 'Test.BaseSeq');
 
   const readSeq = bufferToIce(buffer, 'Test.BaseSeq');
-  assert.deepEquals(seq, readSeq);
-
-  assert.end();
+  expect(seq).toEqual(readSeq);
 });
 
-test('struct sequence', assert => {
+test('struct sequence', () => {
   const seq = [new Test.SomeStruct(true), new Test.SomeStruct(false)];
 
   const buffer = iceToBuffer(seq, 'Test.SomeStructSeq');
 
   const readSeq = bufferToIce(buffer, 'Test.SomeStructSeq');
-  assert.deepEquals(seq, readSeq);
-
-  assert.end();
+  expect(seq).toEqual(readSeq);
 });
 
-test('simple dictionary', assert => {
+test('simple dictionary', () => {
   const dict = new Map();
   dict.set('lol', new Test.SomeStruct(true));
   dict.set('kek', new Test.SomeStruct(false));
@@ -100,12 +89,10 @@ test('simple dictionary', assert => {
   const buffer = iceToBuffer(dict, 'Test.SimpleDict');
 
   const readDict = bufferToIce(buffer, 'Test.SimpleDict');
-  assert.deepEquals(dict, readDict);
-
-  assert.end();
+  expect(dict).toEqual(readDict);
 });
 
-test('complex dictionary', assert => {
+test('complex dictionary', () => {
   const dict = new Ice.HashMap();
   dict.set(new Test.SomeStruct(true), new Test.Base(42));
   dict.set(new Test.SomeStruct(false), new Test.Base(24));
@@ -113,12 +100,10 @@ test('complex dictionary', assert => {
   const buffer = iceToBuffer(dict, 'Test.ComplexDict');
 
   const readDict = bufferToIce(buffer, 'Test.ComplexDict');
-  assert.true(dict.equals(readDict, _.isEqual));
-
-  assert.end();
+  expect(dict.equals(readDict, _.isEqual)).toBe(true);
 });
 
-test('proxies', assert => {
+test('proxies', () => {
   const communicator = Ice.initialize();
   const routerPrx = communicator.stringToProxy(
     'Test/Router:tcp -h 1.2.3.4 -p 5678'
@@ -128,7 +113,5 @@ test('proxies', assert => {
   const buffer = valueToBuffer(instance);
   const readInstance = bufferToValue(buffer, communicator);
 
-  assert.true(readInstance.router.equals(instance.router));
-
-  assert.end();
+  expect(readInstance.router.equals(instance.router)).toBe(true);
 });

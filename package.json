@@ -8,7 +8,7 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "test": "tape test/index.js",
+    "test": "jest",
     "compile-slice": "slice2js --output-dir test test/Test.ice",
     "prepublishOnly": "npm test"
   },
@@ -19,7 +19,7 @@
     "ice": "~3.7.0"
   },
   "devDependencies": {
-    "lodash": "^4.17.5",
-    "tape": "^4.6.3"
+    "jest": "^25.1.0",
+    "lodash": "^4.17.5"
   }
 }
